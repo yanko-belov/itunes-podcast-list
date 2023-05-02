@@ -1,13 +1,14 @@
 import PodcastList from "@/components/podcast-list";
-import list from '@/list.json'
-import { Podcast } from "@/types";
 import Layout from "@/layouts/layout";
+import usePodcasts from "@/hooks/usePodcasts";
 
 export default function Home() {
-  const podcasts = list.feed.entry as Podcast[];
+  const { isLoading, podcasts } = usePodcasts();
+
   return (
     <Layout>
-      <PodcastList podcasts={podcasts} />
+      {isLoading && <span>Loading podcasts...</span>}
+      {!isLoading && <PodcastList podcasts={podcasts} />}
     </Layout>
   )
 }

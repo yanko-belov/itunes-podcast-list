@@ -1,13 +1,16 @@
-import episodeData from '@/podcast.json'
-import { Episode } from "@/types";
 import EpisodeDetailsCard from "@/components/episode-details-card";
 import PodcastLayout from "@/layouts/podcast-layout";
+import useEpisode from "@/hooks/useEpisode";
+import { useRouter } from "next/router";
 
 export default function PodcastDetails() {
-  const episode = episodeData.results[1] as Episode;
+  const router = useRouter()
+  const {podcastId, episodeId} = router.query;
+  const {isLoading, episode} = useEpisode(podcastId as string, episodeId as string);
   return (
     <PodcastLayout>
-      <EpisodeDetailsCard episode={episode} />
+      {(isLoading || !episode) && <span>Loading episode...</span>}
+      {!isLoading && episode && <EpisodeDetailsCard episode={episode}/>}
     </PodcastLayout>
   )
 }

@@ -1,18 +1,21 @@
 import { FC } from "react";
 import { Episode } from "@/types";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface EpisodeTableProps {
   episodes: Episode[]
 }
 
 const EpisodeTable: FC<EpisodeTableProps> = ({episodes}) => {
-  const formatDate = (isoDate:string) => {
+  const router = useRouter()
+  const {podcastId} = router.query;
+  const formatDate = (isoDate: string) => {
     const date = new Date(isoDate);
-    return `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
+    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   }
-  const formatTime = (trackTimeMillis:number) => {
-    return new Date(trackTimeMillis).toISOString().slice(11,19);
+  const formatTime = (trackTimeMillis: number) => {
+    return new Date(trackTimeMillis || 0).toISOString().slice(11, 19);
   }
 
   return (
@@ -34,7 +37,8 @@ const EpisodeTable: FC<EpisodeTableProps> = ({episodes}) => {
       {episodes.map((episode, index) => (
         <tr key={episode.episodeGuid} className={`border-b ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}>
           <th scope="row" className="px-6 py-4 font-medium text-gray-900">
-            <Link className='text-blue-400 hover:text-blue-500' href={`/podcast/${123}/episode/${123}`}>
+            <Link className='text-blue-400 hover:text-blue-500'
+                  href={`/podcast/${podcastId}/episode/${episode.episodeGuid}`}>
               {episode.trackName}
             </Link>
           </th>

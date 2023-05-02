@@ -6,12 +6,10 @@ interface LayoutProps {
 }
 
 const Layout: FC<LayoutProps> = ({children}) => {
-  return (
-    <>
-      <HeaderNav />
-      <div className="container mx-auto px-6 mt-8 mb-8">{children}</div>
-    </>
-  )
+  return <>
+    <HeaderNav/>
+    <div className="container mx-auto px-6 my-8">{children}</div>
+  </>
 }
 
 export default Layout;
