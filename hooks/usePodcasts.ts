@@ -1,9 +1,12 @@
 import { Podcast } from "@/types";
 import { useQuery } from "@tanstack/react-query";
+import { createCorsSafeUrl } from "@/helpers/cors";
 
 const getPodcasts = async () => {
   const response = await fetch(
-    `https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json`
+    createCorsSafeUrl(
+      `https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json`
+    )
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -17,8 +20,14 @@ const usePodcasts = (): { podcasts: Podcast[]; isLoading: boolean } => {
     queryFn: getPodcasts,
   });
 
+  let podcasts = [];
+  try {
+    podcasts = JSON.parse(data?.contents || "{}")?.feed?.entry || [];
+  } catch (error) {
+    console.log(error);
+  }
   return {
-    podcasts: data?.feed?.entry || [],
+    podcasts,
     isLoading,
   };
 };
