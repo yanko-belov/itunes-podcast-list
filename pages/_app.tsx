@@ -1,9 +1,29 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
-import fetcher from "@/swr/fetcher";
-import { localStorageProvider } from "@/swr/cache-provider";
-import { SWRConfig } from "swr";
 import { useEffect, useState } from "react";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+import { persistQueryClient } from '@tanstack/react-query-persist-client'
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
+
+const DAY_IN_MS = 1000 * 60 * 60 * 24;
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: DAY_IN_MS,
+      cacheTime: DAY_IN_MS,
+      retryOnMount: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export default function App({Component, pageProps}: AppProps) {
   const [showChild, setShowChild] = useState(false);
@@ -18,17 +38,17 @@ export default function App({Component, pageProps}: AppProps) {
   if (typeof window === 'undefined') {
     return <></>;
   }
+  const localStoragePersister = createSyncStoragePersister({storage: window.localStorage})
 
-  return <SWRConfig value={{
-    fetcher,
-    provider: localStorageProvider,
-    revalidateOnFocus: false,
-    revalidateOnMount: false,
-    revalidateOnReconnect: false,
-    refreshWhenOffline: false,
-    refreshWhenHidden: false,
-    dedupingInterval: 10_000 * 60 * 60 * 24,
-  }}>
-    <Component {...pageProps} />
-  </SWRConfig>
+  persistQueryClient({
+    queryClient,
+    persister: localStoragePersister,
+  });
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Component {...pageProps} />
+      <ReactQueryDevtools initialIsOpen={false}/>
+    </QueryClientProvider>
+  )
 }
