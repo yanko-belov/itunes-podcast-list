@@ -8,24 +8,24 @@ interface PodcastLayoutProps {
   children: ReactNode;
 }
 
-const PodcastLayout: FC<PodcastLayoutProps> = ({children}) => {
-  const router = useRouter()
-  const {podcastId} = router.query;
-  const {podcast, isLoading} = usePodcast((podcastId || '') as string);
+const PodcastLayout: FC<PodcastLayoutProps> = ({ children }) => {
+  const router = useRouter();
+  const { podcastId } = router.query;
+  const { podcast, isLoading } = usePodcast((podcastId || "") as string);
 
   return (
     <Layout>
       {(isLoading || !podcast) && <span>Loading podcast...</span>}
-      {!isLoading && podcast && (<div className='flex flex-row gap-16'>
-        <div className='w-2/6'>
-          <PodcastDetailsCard podcast={podcast}/>
+      {!isLoading && podcast && (
+        <div className="flex flex-row gap-16">
+          <div className="w-2/6">
+            <PodcastDetailsCard podcast={podcast} />
+          </div>
+          <div className="flex w-4/6 flex-col gap-4">{children}</div>
         </div>
-        <div className='flex flex-col gap-4 w-4/6'>
-          {children}
-        </div>
-      </div>)}
+      )}
     </Layout>
-  )
-}
+  );
+};
 
 export default PodcastLayout;

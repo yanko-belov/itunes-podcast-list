@@ -10,5 +10,5 @@ export default function Home() {
       {isLoading && <span>Loading podcasts...</span>}
       {!isLoading && <PodcastList podcasts={podcasts} />}
     </Layout>
-  )
+  );
 }

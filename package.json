@@ -27,6 +27,9 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "4.29.4",
-    "@tanstack/react-query-devtools": "4.29.6"
+    "@tanstack/react-query-devtools": "4.29.6",
+    "eslint-config-prettier": "8.8.0",
+    "prettier": "2.8.7",
+    "prettier-plugin-tailwindcss": "0.2.7"
   }
 }
