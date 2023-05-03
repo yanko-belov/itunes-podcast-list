@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build:prod": "NODE_ENV=production next build",
+    "build:dev": "NODE_ENV=development next build",
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "start:prod": "NODE_ENV=production next start",
+    "start:dev": "NODE_ENV=development next start"
   },
   "dependencies": {
     "@tanstack/query-sync-storage-persister": "4.29.5",
