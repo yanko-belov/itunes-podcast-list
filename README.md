@@ -18,7 +18,7 @@
 </p>
 
 <h1 align="center">
-<a href="https://netflix-clone-nextjs-omega.vercel.app/">Live Demo</a>
+<a href="https://itunes-podcast-list.vercel.app/">Live Demo</a>
 </h1>
 
 # About
